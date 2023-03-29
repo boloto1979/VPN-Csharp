@@ -4,7 +4,7 @@ public partial class Form1 : Form
 {
     private RasServer rasServer;
     private const string VpnName = "MyVpn";
-    private const string VpnServerIpAddress = "192.168.1.1";
+    private const string VpnServerIpAddress = "190.167.1.1";
     private const int VpnPort = 1723;
     private const RasVpnStrategy VpnStrategy = RasVpnStrategy.PptpOnly;
 
