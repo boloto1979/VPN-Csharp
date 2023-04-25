@@ -1,10 +1,14 @@
+using System;
+using System.Net;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using DotRas;
 
 public partial class Form1 : Form
 {
     private RasServer rasServer;
     private const string VpnName = "MyVpn";
-    private const string VpnServerIpAddress = "190.167.1.1";
+    private const string VpnServerIpAddress = "8.8.8.08";
     private const int VpnPort = 1723;
     private const RasVpnStrategy VpnStrategy = RasVpnStrategy.PptpOnly;
 
@@ -17,21 +21,22 @@ public partial class Form1 : Form
         rasServer.ListenPort = VpnPort;
         rasServer.AllowRemoteConnections = true;
     }
-}
-private void btnStart_Click(object sender, EventArgs e)
-{
-    if (!rasServer.IsRunning)
-    {
-        rasServer.Start();
-        MessageBox.Show("VPN iniciada com sucesso.");
-    }
-}
 
-private void btnStop_Click(object sender, EventArgs e)
-{
-    if (rasServer.IsRunning)
+    private async void btnStart_Click(object sender, EventArgs e)
     {
-        rasServer.Stop();
-        MessageBox.Show("VPN parada com sucesso.");
+        if (!rasServer.IsRunning)
+        {
+            await Task.Run(() => rasServer.Start());
+            MessageBox.Show("VPN iniciada com sucesso.");
+        }
+    }
+
+    private async void btnStop_Click(object sender, EventArgs e)
+    {
+        if (rasServer.IsRunning)
+        {
+            await Task.Run(() => rasServer.Stop());
+            MessageBox.Show("VPN parada com sucesso.");
+        }
     }
 }
