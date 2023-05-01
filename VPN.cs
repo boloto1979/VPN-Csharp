@@ -8,7 +8,7 @@ public partial class Form1 : Form
 {
     private RasServer rasServer;
     private const string VpnName = "MyVpn";
-    private const string VpnServerIpAddress = "8.8.8.08";
+    private const string VpnServerIpAddress = "8.8.8.8";
     private const int VpnPort = 1723;
     private const RasVpnStrategy VpnStrategy = RasVpnStrategy.PptpOnly;
 
@@ -26,7 +26,7 @@ public partial class Form1 : Form
     {
         if (!rasServer.IsRunning)
         {
-            await Task.Run(() => rasServer.Start());
+            await StartVpnServer();
             MessageBox.Show("VPN iniciada com sucesso.");
         }
     }
@@ -35,8 +35,38 @@ public partial class Form1 : Form
     {
         if (rasServer.IsRunning)
         {
-            await Task.Run(() => rasServer.Stop());
+            await StopVpnServer();
             MessageBox.Show("VPN parada com sucesso.");
         }
+    }
+
+    private Task StartVpnServer()
+    {
+        return Task.Run(() =>
+        {
+            try
+            {
+                rasServer.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao iniciar a VPN: " + ex.Message);
+            }
+        });
+    }
+
+    private Task StopVpnServer()
+    {
+        return Task.Run(() =>
+        {
+            try
+            {
+                rasServer.Stop();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao parar a VPN: " + ex.Message);
+            }
+        });
     }
 }
